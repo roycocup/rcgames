@@ -26,7 +26,7 @@ define('DB_NAME', 'rcgames');
 define('DB_USER', 'rcgames');
 
 /** MySQL database password */
-define('DB_PASSWORD', 'rcgamesrcgames');
+define('DB_PASSWORD', 'root');
 
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
