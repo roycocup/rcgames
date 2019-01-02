@@ -1,28 +1,22 @@
-FROM alpine:3.8
+FROM php:7.2-fpm
 
-RUN apk update 
+RUN docker-php-ext-install -j$(nproc) pdo_mysql
 
-RUN apk add \
-    htop \
-    vim \ 
+WORKDIR /app
+
+RUN apt update
+RUN apt install -y \
     nginx \
-    curl \
-    bash \
     supervisor
 
-RUN apk add \
-    php7-fpm \
-    php-pdo
+COPY . .
+RUN mv ./deploy/www.conf /usr/local/etc/php-fpm.d/www.conf
+RUN mv ./deploy/default /etc/nginx/conf.d/default
+RUN mv ./deploy/supervisord.conf /etc/supervisord.conf
+RUN mv ./deploy/entrypoint.sh entrypoint.sh
 
+# RUN chmod +x entrypoint.sh
+# ENTRYPOINT [ "entrypoint.sh" ]
 
-RUN mkdir -p /run/nginx && chmod 0777 /run 
+EXPOSE 80 
 
-WORKDIR /var/www/html
-
-COPY . . 
-
-COPY supervisord.conf /etc/supervisord.conf
-COPY default /etc/nginx/conf.d/default
-
-CMD [ "supervisord" ]
-EXPOSE 80
