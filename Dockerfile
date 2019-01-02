@@ -24,5 +24,5 @@ COPY . .
 COPY supervisord.conf /etc/supervisord.conf
 COPY default /etc/nginx/conf.d/default
 
-
+CMD [ "supervisord" ]
 EXPOSE 80
